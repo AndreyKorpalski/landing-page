@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="image-side">
+            <img src="img/image.svg" alt="Imagem representativa" class="image">
+        </div>
+        <div class="login-side">
+            <header>
+                <div class="text-titulo-container">
+                    <h1 class="text-titulo">Bem-vindo de volta</h1>
+                    <p class="text-subtitulo">Faça login na sua conta</p>
+                </div>
+            </header>      
+            <main>
+                <form class="formulario" id="loginForm" aria-labelledby="form-title">
+                    <div class="form-group">
+                        <label for="username">E-mail</label>
+                        <input type="email" id="username" name="username" placeholder="exemplo@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" placeholder="0123456789" required>
+                    </div>
+                    <div class="form-group-options">
+                        <label>
+                            <input type="checkbox" name="remember"> Lembre de mim
+                        </label>
+                        <a href="#">Esqueceu a senha?</a>
+                    </div>
+                    <div class="form-botao">
+                        <button type="submit" class="form-group-entrar">Entrar na conta</button>
+                        <button type="button" class="google-button" aria-label="Login com Google">
+                            <img src="img/icon.png" alt="Ícone do Google" class="google-icon" width="20">
+                            Ou faça login com o Google
+                        </button>
+                    </div>
+                    <div class="form-group-options" style="justify-content: center;margin-top: 20px;">
+                        <span>Não tem uma conta? <a href="cadastro.html" class="link-cadastre-se">Cadastre-se</a></span>
+                    </div>
+                </form>
+                <div id="successMessage" style="display:none;margin-top: 20px; color: green;">
+                    Login efetuado com sucesso!
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
