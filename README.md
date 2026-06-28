@@ -62,6 +62,11 @@ Abra no Expo Go (Android/iOS) ou em um simulador.
 
 - `create-monthly-charges`: cria a cobrança (boleto + Pix) de cada associado ativo no Asaas, agendada mensalmente.
 - `asaas-webhook`: recebe confirmação de pagamento do Asaas e atualiza o status da cobrança.
+- `create-member`: cadastra um novo associado a partir do app (só admin pode chamar). Deploy:
+
+```bash
+npx supabase functions deploy create-member
+```
 
 ## Segurança
 
