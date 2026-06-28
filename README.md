@@ -40,6 +40,8 @@ Crie manualmente o primeiro usuário admin (no SQL editor do Supabase, após o u
 update profiles set role = 'admin' where id = '<uuid-do-usuario>';
 ```
 
+Para popular o app com dados de exemplo (um admin, três associados e cobranças em status variados, úteis para ver os gráficos preenchidos), use `supabase/seed_demo.sql` — as instruções estão no topo do arquivo.
+
 Configure no painel do Asaas o webhook apontando para:
 `https://<PROJECT_REF>.supabase.co/functions/v1/asaas-webhook`
 
