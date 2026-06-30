@@ -1,10 +1,10 @@
-// Edge Function chamada pelo app (admin) para gerar manualmente a cobrança de
-// um mês para todos os associados ativos — versão sem Asaas (apenas registra a
-// cobrança no banco: valor, vencimento e status 'pending').
+// Edge Function chamada pelo app (admin) para gerar as cobranças de um mês.
+// O admin informa o VALOR DE CADA ASSOCIADO (conta de água varia por consumo),
+// então o corpo traz uma lista de itens { member_id, amount }.
 //
-// Escrita em `charges` é bloqueada para o cliente via RLS; por isso a criação
-// passa por aqui, usando a service_role. Quando a integração do Asaas entrar,
-// é esta função (ou a agendada) que vai preencher boleto/Pix nas cobranças.
+// Versão sem Asaas: apenas registra as cobranças no banco (valor, vencimento,
+// status 'pending'). Escrita em `charges` é bloqueada para o cliente via RLS;
+// por isso a criação passa por aqui, usando a service_role.
 
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -32,6 +32,11 @@ function isValidDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const d = new Date(`${value}T00:00:00`);
   return !Number.isNaN(d.getTime());
+}
+
+interface Item {
+  member_id: string;
+  amount: number;
 }
 
 Deno.serve(async (req) => {
@@ -70,12 +75,25 @@ Deno.serve(async (req) => {
   const dueDate = String(body?.due_date ?? "");
   if (!isValidDate(dueDate)) return fail(400, "Data de vencimento inválida (use AAAA-MM-DD)");
 
-  const amount = Number(body?.amount);
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return fail(400, "Informe um valor maior que zero");
+  const rawItems = Array.isArray(body?.items) ? (body!.items as unknown[]) : null;
+  if (!rawItems || rawItems.length === 0) {
+    return fail(400, "Informe o valor de pelo menos um associado");
   }
 
-  // 3. Busca os associados ativos.
+  // 3. Valida cada item (member_id presente, amount > 0).
+  const items: Item[] = [];
+  for (const raw of rawItems) {
+    const obj = raw as Record<string, unknown>;
+    const member_id = String(obj?.member_id ?? "");
+    const amount = Number(obj?.amount);
+    if (!member_id) return fail(400, "Item sem associado");
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return fail(400, "Todos os valores devem ser maiores que zero");
+    }
+    items.push({ member_id, amount });
+  }
+
+  // 4. Garante que os ids são realmente associados ativos.
   const { data: members, error: membersErr } = await admin
     .from("profiles")
     .select("id")
@@ -83,20 +101,23 @@ Deno.serve(async (req) => {
     .eq("active", true);
 
   if (membersErr) return fail(400, membersErr.message);
-  if (!members || members.length === 0) {
-    return fail(400, "Nenhum associado ativo encontrado");
+  const validIds = new Set((members ?? []).map((m) => m.id));
+
+  const rows = items
+    .filter((it) => validIds.has(it.member_id))
+    .map((it) => ({
+      member_id: it.member_id,
+      competence_month: competence,
+      amount: it.amount,
+      due_date: dueDate,
+      status: "pending",
+    }));
+
+  if (rows.length === 0) {
+    return fail(400, "Nenhum associado ativo válido na lista");
   }
 
-  // 4. Monta uma cobrança por associado e insere ignorando duplicados
-  //    (constraint unique member_id + competence_month evita cobrar 2x o mesmo mês).
-  const rows = members.map((m) => ({
-    member_id: m.id,
-    competence_month: competence,
-    amount,
-    due_date: dueDate,
-    status: "pending",
-  }));
-
+  // 5. Insere ignorando duplicados (unique member_id + competence_month).
   const { data: inserted, error: insertErr } = await admin
     .from("charges")
     .upsert(rows, { onConflict: "member_id,competence_month", ignoreDuplicates: true })
@@ -106,7 +127,7 @@ Deno.serve(async (req) => {
 
   const created = inserted?.length ?? 0;
   return new Response(
-    JSON.stringify({ created, skipped: rows.length - created, total_members: rows.length }),
+    JSON.stringify({ created, skipped: rows.length - created, total: rows.length }),
     { status: 200, headers: jsonHeaders },
   );
 });
