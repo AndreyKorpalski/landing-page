@@ -68,6 +68,12 @@ Abra no Expo Go (Android/iOS) ou em um simulador.
 npx supabase functions deploy create-member
 ```
 
+- `generate-charges`: gera manualmente a cobrança do mês para todos os associados ativos (só admin), registrando valor/vencimento no banco — sem Asaas ainda. Útil para testar o fluxo e popular o dashboard antes da integração de pagamento. Deploy:
+
+```bash
+npx supabase functions deploy generate-charges
+```
+
 ## Segurança
 
 Toda escrita em `charges`/`payments` é bloqueada para o cliente via RLS — só as Edge Functions (com a service_role key) escrevem essas tabelas. As chaves do Asaas vivem só como secrets do Supabase, nunca no app.

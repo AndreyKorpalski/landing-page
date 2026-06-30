@@ -27,9 +27,14 @@ export default function AdminDashboardScreen() {
           <PaidVsUnpaidDonut data={periodSummary} />
           <CollectedTrendLine data={monthlyCollected} />
 
-          <TouchableOpacity style={styles.membersButton} onPress={() => router.push("/(admin)/members")}>
-            <Ionicons name="people-outline" size={18} color="#fff" />
-            <Text style={styles.membersButtonText}>Ver lista de associados</Text>
+          <TouchableOpacity style={styles.primaryButton} onPress={() => router.push("/(admin)/gerar-cobrancas")}>
+            <Ionicons name="cash-outline" size={18} color="#fff" />
+            <Text style={styles.primaryButtonText}>Gerar cobranças do mês</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.secondaryButton} onPress={() => router.push("/(admin)/members")}>
+            <Ionicons name="people-outline" size={18} color={theme.primary} />
+            <Text style={styles.secondaryButtonText}>Ver lista de associados</Text>
           </TouchableOpacity>
         </ScrollView>
       )}
@@ -40,7 +45,7 @@ export default function AdminDashboardScreen() {
 const styles = StyleSheet.create({
   content: { padding: 20 },
   center: { flex: 1, alignItems: "center", justifyContent: "center" },
-  membersButton: {
+  primaryButton: {
     backgroundColor: theme.primary,
     borderRadius: 12,
     padding: 15,
@@ -50,5 +55,18 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 20,
   },
-  membersButtonText: { color: "#fff", fontWeight: "700", fontSize: 15 },
+  primaryButtonText: { color: "#fff", fontWeight: "700", fontSize: 15 },
+  secondaryButton: {
+    backgroundColor: theme.card,
+    borderWidth: 1,
+    borderColor: theme.primary,
+    borderRadius: 12,
+    padding: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 12,
+  },
+  secondaryButtonText: { color: theme.primary, fontWeight: "700", fontSize: 15 },
 });
