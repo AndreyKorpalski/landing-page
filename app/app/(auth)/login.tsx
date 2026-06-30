@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../src/lib/supabase";
+import { cardShadow, theme } from "../../src/theme";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -31,6 +33,9 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.logo}>
+        <Ionicons name="water" size={36} color="#fff" />
+      </View>
       <Text style={styles.title}>Conta de Água</Text>
       <Text style={styles.subtitle}>Entre com sua conta da associação</Text>
 
@@ -62,24 +67,36 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 24, backgroundColor: "#fff" },
-  title: { fontSize: 28, fontWeight: "700", textAlign: "center", marginBottom: 4, color: "#0369a1" },
-  subtitle: { fontSize: 14, textAlign: "center", marginBottom: 32, color: "#666" },
+  container: { flex: 1, justifyContent: "center", padding: 24, backgroundColor: theme.bg },
+  logo: {
+    alignSelf: "center",
+    width: 72,
+    height: 72,
+    borderRadius: 22,
+    backgroundColor: theme.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+    ...cardShadow,
+  },
+  title: { fontSize: 28, fontWeight: "700", textAlign: "center", marginBottom: 4, color: theme.primaryDark },
+  subtitle: { fontSize: 14, textAlign: "center", marginBottom: 32, color: theme.textMuted },
   input: {
+    backgroundColor: theme.card,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
+    borderColor: theme.border,
+    borderRadius: 10,
+    padding: 14,
     marginBottom: 12,
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#0369a1",
-    borderRadius: 8,
-    padding: 14,
+    backgroundColor: theme.primary,
+    borderRadius: 12,
+    padding: 15,
     alignItems: "center",
     marginTop: 8,
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  link: { color: "#0369a1", textAlign: "center", marginTop: 16 },
+  buttonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  link: { color: theme.primary, textAlign: "center", marginTop: 16 },
 });

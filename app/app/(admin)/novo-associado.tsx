@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { supabase } from "../../src/lib/supabase";
+import { ScreenLayout } from "../../src/components/ScreenLayout";
+import { theme } from "../../src/theme";
 
 export default function NovoAssociadoScreen() {
   const router = useRouter();
@@ -62,79 +64,73 @@ export default function NovoAssociadoScreen() {
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.back}>‹ Voltar</Text>
-        </TouchableOpacity>
+    <ScreenLayout title="Novo associado" back>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <Text style={styles.subtitle}>Os dados abaixo serão usados para gerar as cobranças no Asaas.</Text>
 
-        <Text style={styles.title}>Novo associado</Text>
-        <Text style={styles.subtitle}>Os dados abaixo serão usados para gerar as cobranças no Asaas.</Text>
+          <TextInput style={styles.input} placeholder="Nome completo" value={fullName} onChangeText={setFullName} />
+          <TextInput
+            style={styles.input}
+            placeholder="E-mail"
+            autoCapitalize="none"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="CPF/CNPJ (só números)"
+            keyboardType="number-pad"
+            value={cpfCnpj}
+            onChangeText={setCpfCnpj}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Telefone com DDD"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Senha temporária (mín. 6 caracteres)"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Nome completo"
-          value={fullName}
-          onChangeText={setFullName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="CPF/CNPJ (só números)"
-          keyboardType="number-pad"
-          value={cpfCnpj}
-          onChangeText={setCpfCnpj}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Telefone com DDD"
-          keyboardType="phone-pad"
-          value={phone}
-          onChangeText={setPhone}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha temporária (mín. 6 caracteres)"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-
-        <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Cadastrar associado</Text>}
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Cadastrar associado</Text>
+            )}
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
   content: { padding: 24 },
-  back: { color: "#0369a1", fontSize: 16, marginBottom: 12 },
-  title: { fontSize: 24, fontWeight: "700", color: "#0f172a", marginBottom: 4 },
-  subtitle: { fontSize: 13, color: "#64748b", marginBottom: 24 },
+  subtitle: { fontSize: 13, color: theme.textMuted, marginBottom: 24 },
   input: {
+    backgroundColor: theme.card,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
+    borderColor: theme.border,
+    borderRadius: 10,
+    padding: 14,
     marginBottom: 12,
     fontSize: 16,
   },
   button: {
-    backgroundColor: "#0369a1",
-    borderRadius: 8,
-    padding: 14,
+    backgroundColor: theme.primary,
+    borderRadius: 12,
+    padding: 15,
     alignItems: "center",
     marginTop: 8,
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  buttonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
 });

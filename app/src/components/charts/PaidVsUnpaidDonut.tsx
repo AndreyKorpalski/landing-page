@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import type { ChargeStatus, PeriodStatusCount } from "../../types/database.types";
+import { cardShadow } from "../../theme";
 
 const COLORS: Record<ChargeStatus, string> = {
   paid: "#22c55e",
@@ -52,7 +53,7 @@ export function PaidVsUnpaidDonut({ data }: { data: PeriodStatusCount[] }) {
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#fff", borderRadius: 10, padding: 16, marginTop: 12 },
+  container: { backgroundColor: "#fff", borderRadius: 16, padding: 16, marginTop: 12, ...cardShadow },
   title: { fontSize: 14, fontWeight: "600", color: "#0f172a", marginBottom: 12 },
   chartRow: { flexDirection: "row", alignItems: "center", gap: 16 },
   centerLabel: { fontSize: 16, fontWeight: "700", color: "#0f172a" },

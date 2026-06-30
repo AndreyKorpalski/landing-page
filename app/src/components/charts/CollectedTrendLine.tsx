@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
 import type { MonthlyCollected } from "../../types/database.types";
+import { cardShadow } from "../../theme";
 
 export function CollectedTrendLine({ data }: { data: MonthlyCollected[] }) {
   const chartData = data.map((item) => ({
@@ -30,7 +31,7 @@ export function CollectedTrendLine({ data }: { data: MonthlyCollected[] }) {
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#fff", borderRadius: 10, padding: 16, marginTop: 12 },
+  container: { backgroundColor: "#fff", borderRadius: 16, padding: 16, marginTop: 12, ...cardShadow },
   title: { fontSize: 14, fontWeight: "600", color: "#0f172a", marginBottom: 12 },
   muted: { color: "#888" },
 });
