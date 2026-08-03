@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Ferro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1>REGISTRO DE FERRO</h1>
+        <p class="subtitle">Registre cada série. Supere cada recorde.</p>
+    </header>
+
+    <nav class="tabs" id="main-tabs">
+        <button class="tab-btn active" data-view="biblioteca" type="button">Biblioteca</button>
+        <button class="tab-btn" data-view="treino" type="button">Treino de hoje <span id="treino-count" class="tab-badge" style="display:none;">0</span></button>
+        <button class="tab-btn" data-view="historico" type="button">Histórico</button>
+        <button class="tab-btn" data-view="painel" type="button">Painel</button>
+    </nav>
+
+    <main id="app">
+
+        <!-- BIBLIOTECA -->
+        <section id="view-biblioteca" class="view">
+            <div class="filters">
+                <input id="search-input" type="search" placeholder="Buscar por nome ou equipamento...">
+            </div>
+            <div class="group-tabs" id="group-tabs"></div>
+            <div id="exercises-grid" class="grid exercises-grid"></div>
+            <p id="no-results" class="state-message" style="display:none;">Nenhum exercício encontrado.</p>
+        </section>
+
+        <!-- TREINO DE HOJE -->
+        <section id="view-treino" class="view" style="display:none;">
+            <div class="view-toolbar">
+                <h2>Treino de hoje</h2>
+                <button id="save-workout" class="btn-accent" type="button">Salvar treino de hoje</button>
+            </div>
+            <p id="treino-empty" class="state-message">Nenhum exercício adicionado ainda. Vá até a Biblioteca e clique em "+ Adicionar ao treino".</p>
+            <div id="treino-list"></div>
+        </section>
+
+        <!-- HISTÓRICO -->
+        <section id="view-historico" class="view" style="display:none;">
+            <h2>Histórico de treinos</h2>
+            <p id="historico-empty" class="state-message">Nenhum treino salvo ainda.</p>
+            <div id="historico-list"></div>
+        </section>
+
+        <!-- PAINEL -->
+        <section id="view-painel" class="view" style="display:none;">
+            <h2>Painel</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-total-treinos">0</span>
+                    <span class="stat-label">Treinos registrados</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-semana">0</span>
+                    <span class="stat-label">Treinos nesta semana</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-series">0</span>
+                    <span class="stat-label">Séries totais</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="stat-favorito">—</span>
+                    <span class="stat-label">Exercício mais treinado</span>
+                </div>
+            </div>
+
+            <h3 class="pr-title">Recordes pessoais (PR)</h3>
+            <p id="pr-empty" class="state-message">Sem recordes ainda — registre um treino para começar.</p>
+            <div id="pr-list" class="pr-list"></div>
+        </section>
+
+    </main>
+
+    <div id="exercise-detail-overlay" class="modal-overlay" style="display:none;">
+        <div class="modal" role="dialog" aria-modal="true">
+            <button id="detail-close" class="modal-close" type="button" aria-label="Fechar">&times;</button>
+            <div class="modal-media">
+                <img id="detail-img" src="" alt="">
+            </div>
+            <div class="modal-body">
+                <h2 id="detail-name"></h2>
+                <div class="modal-tags">
+                    <span id="detail-group" class="tag"></span>
+                    <span id="detail-equipment" class="tag"></span>
+                    <span id="detail-level" class="tag tag-level"></span>
+                </div>
+                <button id="detail-add" class="btn-accent" type="button">+ Adicionar ao treino</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <p>
+            Imagens dos exercícios: dataset
+            <a href="https://github.com/yuhonas/free-exercise-db" target="_blank" rel="noopener">free-exercise-db</a>
+            (domínio público / Unlicense). Seus dados de treino ficam salvos apenas neste navegador.
+        </p>
+    </footer>
+
+    <script src="js/exercises-data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

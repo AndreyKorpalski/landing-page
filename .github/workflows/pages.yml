@@ -1,10 +1,10 @@
-name: Deploy workout site to GitHub Pages
+name: Deploy Registro de Ferro to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - "workout/**"
+      - "registro-de-ferro/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -28,6 +28,6 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: workout
+          path: registro-de-ferro
       - id: deployment
         uses: actions/deploy-pages@v4
